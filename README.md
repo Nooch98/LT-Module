@@ -3,7 +3,11 @@ Module created to be used instead of ls or dir on PowerShell, which displays the
 
 # Instalation
 
-> Put size.psm1 on Documents\Powershell\Modules\Size or Documents\MicrosoftWindowsPowerShell\Modules\Size if dont exist the folder create
+- Put size.psm1 on Documents\Powershell\Modules\Size or Documents\MicrosoftWindowsPowerShell\Modules\Size if dont exist the folder create
+- Put the next line in your PowerShell profile
+```
+Import-Module size
+```
 
 # Usage
 
