@@ -9,3 +9,5 @@ Module created to be used instead of ls or dir on PowerShell, which displays the
 -Not al Types of files have one icon
 
 -I Need Improve the optimization on load the information
+
+-The Infoseguridad field is trying to emulate bash so have some issues is not perfect
