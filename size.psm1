@@ -2,8 +2,7 @@ function size {
     param (
         [string]$ruta = (Get-Location).Path,
         [string]$filtro = "*",
-        [string]$buscar = "",
-        [int]$profundidadMaxima = 9999  # Profundidad máxima por defecto
+        [string]$buscar = ""
     )
 
     function Get-FileIcon($extension) {
@@ -46,15 +45,11 @@ function size {
         return "📄"
     }
 
-    function Get-FileSize($ruta, $profundidad) {
+    function Get-FileSize($ruta) {
         $item = Get-Item $ruta
 
         if ($item.PSIsContainer) {
-            if ($profundidad -gt 0) {
-                $tamano = (Get-ChildItem -Recurse -Depth 1 $ruta | Measure-Object -Property Length -Sum).Sum
-            } else {
-                $tamano = 0
-            }
+            $tamano = (Get-ChildItem -Recurse $ruta | Measure-Object -Property Length -Sum).Sum
         } else {
             $tamano = $item.Length
         }
@@ -156,16 +151,12 @@ function size {
         $infoSeguridad
     }
 
-    function Get-FileHashes($ruta, $tamanoMaximo) {
-        $hashes = @()
-        $files = Get-ChildItem -Path $ruta -File | Where-Object { $_.Length -le $tamanoMaximo }
-
-        foreach ($file in $files) {
-            $hash = Get-FileHash -Path $file.FullName -Algorithm MD5 | Select-Object -ExpandProperty Hash
-            $hashes += $hash
+    function Get-FileHashes($ruta) {
+        $hashes = Get-ChildItem -Path $ruta -File | ForEach-Object {
+            $hash = Get-FileHash -Path $_.FullName -Algorithm MD5 | Select-Object -ExpandProperty Hash
+            $hash
         }
-
-        $hashes -join ', '
+        $hashes
     }
 
     function Get-FileOrFolderInfo($ruta) {
@@ -248,9 +239,12 @@ function size {
     $tablaContenido = $contenido | ForEach-Object { Get-FileOrFolderInfo $_.FullName }
 
     # Modificar la información de permisos para usar el formato UNIX
-     $tablaContenido = $contenido | ForEach-Object {
-        $profundidad = if ($_.PSIsContainer) { $profundidadMaxima } else { 0 }
-        Get-FileOrFolderInfo $_.FullName $profundidad
+    $tablaContenido = $tablaContenido | ForEach-Object {
+        if ($_.InfoSeguridad -ne $null) {
+            $permisosUnix = Convert-ToUnixPermissions -permisos $_.InfoSeguridad.Permisos
+            $_.InfoSeguridad = $permisosUnix
+        }
+        $_  # Se asegura de mantener el objeto con la información modificada o sin cambios
     }
 
     # Select the properties and convert hash to string
