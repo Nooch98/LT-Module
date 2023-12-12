@@ -7,4 +7,5 @@ Module created to be used instead of ls or dir on PowerShell, which displays the
 
 # Issues
 -Not al Types of files have one icon
+
 -I Need Improve the optimization on load the information
