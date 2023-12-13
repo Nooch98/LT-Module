@@ -1,6 +1,8 @@
 # LT-Module
 Module created to be used instead of ls or dir on PowerShell, which displays the file size, the number of files within a folder, the security information of the files, the number of text lines a file has, and its MD5 hash.
 
+![Badge en Desarollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
+
 # Instalation
 
 - Put size.psm1 on Documents\Powershell\Modules\Size or Documents\MicrosoftWindowsPowerShell\Modules\Size if dont exist the folder create
@@ -8,6 +10,7 @@ Module created to be used instead of ls or dir on PowerShell, which displays the
 ```
 Import-Module size
 ```
+-Need install NerdFonts [NerdFonts](https://www.nerdfonts.com/)
 
 # Usage
 
